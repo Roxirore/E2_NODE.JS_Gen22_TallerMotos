@@ -1,18 +1,18 @@
 const express = require('express')
 const repairsController = require('./../controllers/repairs.controller')
 
-const repairsrouter = express.Router();
+const repairsRouter = express.Router();
 
-repairsrouter
+repairsRouter
 .route('/')
 // .get(repairsController.findAllRepairsUser)
 .get(repairsController.findAllRepairsPending)
 .post(repairsController.createRepair)
 
-repairsrouter
+repairsRouter
 .route('/:id')
 .get(repairsController.findOneRepair)
 .patch(repairsController.updateRepair)
 .delete(repairsController.deleteRepair)
 
-module.exports = repairsrouter;
+module.exports = repairsRouter;

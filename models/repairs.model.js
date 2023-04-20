@@ -9,7 +9,7 @@ const Repair = dbrepairs.define('repairs', {
         type: DataTypes.INTEGER,
     },
     date: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         allowNull: false,
     },
     status: {
