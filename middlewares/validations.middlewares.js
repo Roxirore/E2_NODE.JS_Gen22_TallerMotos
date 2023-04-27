@@ -18,3 +18,15 @@ exports.createUserValidation = [
     body('password').notEmpty().withMessage('password cannot be empty').isLength({ min: 6 }).withMessage('password must be at least 6 characters long'),
     validFields,
 ];
+
+exports.updateUserValidation = [
+    body('role').notEmpty().withMessage('role cannot be empty'),
+    body('status').notEmpty().withMessage('status cannot be empty'),
+    validFields,
+];
+
+exports.deleteUserValidation = [
+    body('role').notEmpty().withMessage('role cannot be empty'),
+    body('status').notEmpty().withMessage('status cannot be empty'),
+    validFields,
+];

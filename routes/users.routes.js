@@ -1,5 +1,7 @@
-const express = require('express')
-const usersController = require('./../controllers/users.controller')
+const express = require('express');
+const usersController = require('./../controllers/users.controller');
+const usersMiddlewares = require('./../middlewares/users.middlewares');
+const validationMiddleware = require('./../middlewares/validations.middlewares');
 
 const usersRouter = express.Router();
 
@@ -10,9 +12,9 @@ usersRouter
 
 usersRouter
 .route('/:userid')
-.get(usersController.findOneUser)
-.patch(usersController.updateUser)
+.get(usersMiddlewares.validExistUser,usersController.findOneUser)
+.patch(usersMiddlewares.validExistUser,validationMiddleware.updateUserValidation,usersController.updateUser)
 // .patch(usersController.updateUserClient)
-.delete(usersController.deleteUser)
+.delete(usersMiddlewares.validExistUser,validationMiddleware.deleteUserValidation,usersController.deleteUser)
 
 module.exports = usersRouter;

@@ -1,5 +1,5 @@
+const catchAsync = require('../utils/catchAsync');
 const Repair = require('./../models/repairs.model');
-
 // //controllers sin id
 
 // exports.findAllRepairsUser = async (req, res) => {
@@ -19,8 +19,8 @@ const Repair = require('./../models/repairs.model');
 //   });
 // };
 
-exports.findAllRepairsPending = async (req, res) => {
-  try {
+exports.findAllRepairsPending = catchAsync (async (req, res) => {
+
 
     const repairs = await Repair.findAll({
       where: {
@@ -35,16 +35,10 @@ exports.findAllRepairsPending = async (req, res) => {
       repairs,
     });
 
-  } catch (error) {
-console.log(error);
-return res.status(500).json({
-status: 'fail',
-message: 'Somethhing went wrong'
-})  }
-};
+});
 
-exports.createRepair = async (req, res) => {
-  try {
+exports.createRepair = catchAsync (async (req, res) => {
+
 
     const { userid, date } =
       req.body;
@@ -60,16 +54,13 @@ exports.createRepair = async (req, res) => {
       repair,
     });
 
-  } catch (error) {
-
-  }
-};
+});
 
 
 // //controllers con id
 
-exports.updateRepair = async (req, res) => {
-  try {
+exports.updateRepair = catchAsync (async (req, res) => {
+
 
     // traer el userid de la res.params
     const { id } = req.params;
@@ -94,17 +85,10 @@ exports.updateRepair = async (req, res) => {
       message: 'the repair has been completed',
     });
 
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      status: 'fail',
-      message: 'Something went wrong',
-    })
-  }
-};
 
-exports.deleteRepair = async (req, res) => {
-  try {
+});
+
+exports.deleteRepair = catchAsync (async (req, res) => {
     
     // traer el userid de la res.params
     const { id } = req.params;
@@ -129,17 +113,9 @@ exports.deleteRepair = async (req, res) => {
       message: 'the repair has been cancelled',
     });
 
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      status: 'fail',
-      message: 'Something went wrong',
-    })
-  }
-};
+});
 
-exports.findOneRepair = async (req, res) => {
-  try {
+exports.findOneRepair = catchAsync (async (req, res) => {
     
     const { id } = req.params;
   
@@ -158,11 +134,4 @@ exports.findOneRepair = async (req, res) => {
       repair,
     });
 
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      status: 'fail',
-      message: 'Something went wrong',
-    })
-  }
-};
+});

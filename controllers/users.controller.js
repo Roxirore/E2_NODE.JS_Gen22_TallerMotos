@@ -1,10 +1,11 @@
 const User = require('../models/users.model');
-
+const catchAsync = require('../utils/catchAsync');
+const usersMiddlewares = require('./../middlewares/users.middlewares');
 
 // controllers sin userid
 
-exports.findAllUsers = async (req, res) => {
-  try {
+exports.findAllUsers = catchAsync (async (req, res) => {
+
     
     const users = await User.findAll({
       where: {
@@ -17,102 +18,51 @@ exports.findAllUsers = async (req, res) => {
       users,
     });
 
-  } catch (error) {
-console.log(error);
-return res.status(500).json({
-  status: 'fail',
-  message: 'Something went wrong'
-})
-  }
-};
 
-// exports.createUser = async (req, res) => {
-//   try {
-    
-//     const { name, email, password } = req.body;
-//     const user = await User.create({
-//       name,
-//       email,
-//       password,
-//     });
-//     res.status(201).json({
-//       message: 'The new user was created',
-//       user,
-//     });
-
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({
-//       status: 'fail',
-//       message: 'Something went wrong'
-//     })
-//   }
-// };
+});
 
 
 //controllers con userid
 
-exports.findOneUser = async (req, res) => {
-  try {
-    
+
+exports.findOneUser = catchAsync (async (req, res) => {
+
     const { userid } = req.params;
+    const { user } = req;
   
-    const user = await User.findOne({
-      where: {
-        userid,
-      },
-    });
-    if (!user) {
-      return res.status(404).json({
-        message: `user with id ${userid} not found`,
-      });
-    }
+
     res.status(200).json({
       message: `the user with id ${userid} was found successfully`,
       user,
     });
 
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      status: 'fail',
-      message: 'Something went wrong'
-    })
-  }
-};
+});
 
-exports.updateUser = async (req, res) => {
-  try {
+exports.updateUser = catchAsync (async (req, res) => {
+
     
     const { userid } = req.params;
+    // traer la informacióm que quiero actualizar
     const { role, status } = req.body;
-    const user = await User.findOne({
+    // traer el user de la req (validation)
+    const { user } = req;
+    // ubicar el usuario a actualizar
+    await User.findOne({
       where: {
         userid,
         role: 'client',
         status: 'available',
       },
     });
-    if (!user) {
-      return res.status(404).json({
-        status: 'error',
-        message: `the user with id: ${userid} is not found`,
-      });
-    }
-    await user.update({ role: 'employee' });
+  // actualizar el role
+    await user.update({role: 'employee'});
+
     res.status(200).json({
       status: 'success',
-      message: 'the user has been updated',
+      message: 'the client upgraded to employee',
     });
 
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      status: 'fail',
-      message: 'Something went wrong'
-    })
-  }
-};
+});
 
 // exports.updateUserClient = async (req, res) => {
 //   const { userid } = req.params;
@@ -137,14 +87,15 @@ exports.updateUser = async (req, res) => {
 //   });
 // };
 
-exports.deleteUser = async (req, res) => {
-  try {
-    
+exports.deleteUser = catchAsync (async (req, res) => {
+    // traer en usuario del validations.middlewares
+    const { user } =  req;
     // traer el userid de la res.params
     const { userid } = req.params;
+    // traer la informacióm que quiero actualizar
     const { status } = req.body;
     // buscar el usuario a actualizar
-    const user = await User.findOne({
+    await User.findOne({
       where: {
         userid,
         status: 'available',
@@ -159,16 +110,11 @@ exports.deleteUser = async (req, res) => {
     }
     // usar el update para pasar el estado a unavailable o cancelled
     await user.update({ status: 'disabled' });
+
     res.status(200).json({
       status: 'success',
       message: 'the user has been disabled',
     });
 
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      status: 'fail',
-      message: 'Something went wrong'
-    })
-  }
-};
+});
+
