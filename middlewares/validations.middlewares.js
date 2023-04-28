@@ -19,6 +19,12 @@ exports.createUserValidation = [
     validFields,
 ];
 
+exports.loginUserValidation = [
+    body('email').notEmpty().withMessage('email cannot be empty').isEmail().withMessage('must be a valid email'),
+    body('password').notEmpty().withMessage('password cannot be empty').isLength({ min: 6 }).withMessage('password must be at least 6 characters long'),
+    validFields,
+];
+
 exports.updateUserValidation = [
     body('role').notEmpty().withMessage('role cannot be empty'),
     body('status').notEmpty().withMessage('status cannot be empty'),
