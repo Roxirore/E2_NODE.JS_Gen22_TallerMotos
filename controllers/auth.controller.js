@@ -1,4 +1,5 @@
 const catchAsync = require('../utils/catchAsync');
+const generateJWT = require('../utils/jwt');
 const User = require('./../models/users.model');
 const bcrypt = require('bcryptjs');
 
@@ -16,9 +17,18 @@ exports.signup = catchAsync (async (req, res, next) => {
       password: encryptedPassword,
       role,
     });
+
+    const token = await generateJWT(user.userid);
+
     res.status(201).json({
       message: 'The new user was created',
-      user,
+      user: {
+        userid: user.userid,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+      token,
     });
 
 
