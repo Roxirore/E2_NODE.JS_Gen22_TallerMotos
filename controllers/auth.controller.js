@@ -13,10 +13,10 @@ exports.signup = catchAsync (async (req, res, next) => {
     const encryptedPassword = await bcrypt.hash(password, salt);
 
     const user = await User.create({
-      name: name.ToLowerCase(),
-      email: email.ToLowerCase(),
+      name: name.toLowerCase(),
+      email: name.toLowerCase(),
       password: encryptedPassword,
-      role: role.ToLowerCase(),
+      role: name.toLowerCase(),
     });
 
     const token = await generateJWT(user.userid);
