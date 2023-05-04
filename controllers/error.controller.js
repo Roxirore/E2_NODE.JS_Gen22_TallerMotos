@@ -4,6 +4,10 @@ const handleCastError22P02 = () => {
   return new AppError('Some type off data send does not match was expected', 400);
 }
 
+const handleJWTExpiredError = () => {
+  new AppError('Your token has expired, lease login again!')
+}
+
 const sendErrorDev = (err, res) => {
 
   res.status(err.statusCode).json({
@@ -43,6 +47,9 @@ const globalErrorHandler = (err, req, res, next) => {
       console.log(error.parent?.code);
 
       if(error.parent?.code === '22P02') error = handleCastError22P02()
+      if(error.name === 'tokenExpiredError') error = handleJWTExpiredError()
+
+      console.log(error.name);
 
       sendErrorProd(error, res)
     }
