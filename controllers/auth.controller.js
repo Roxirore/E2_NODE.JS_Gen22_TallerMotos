@@ -67,3 +67,26 @@ exports.login = catchAsync (async (req, res, next) => {
   token,
 });
 });
+
+exports.updatedPassword = catchAsync (async (req, res, next) => {
+  const { user } = req;
+  const { currentPassword, newPassword } = req.body;
+
+  if (!(await bcrypt.compare(currentPassword, user.passsword))) {
+    return next(new AppError('Incorrect password', 401))
+  }
+
+  const salt = await bcrypt.genSalt(10);
+
+  const encryptedPassword = await bcrypt.hash(newPassword, salt);
+
+  await user.update({
+    password: encryptedPassword,
+    passwordChangedAt: new Date(),
+  });
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'The user password was changed successfully!'
+  });
+});
