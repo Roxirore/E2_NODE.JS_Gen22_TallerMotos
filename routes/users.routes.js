@@ -25,12 +25,14 @@ usersRouter
 .patch(
     usersMiddlewares.validExistUser,
     validationMiddleware.updateUserValidation,
+    authMiddleware.protectAccountOwner,
     usersController.updateUser
     )
 // .patch(usersController.updateUserClient)
 .delete(
     usersMiddlewares.validExistUser,
     validationMiddleware.deleteUserValidation,
+    authMiddleware.protectAccountOwner,
     usersController.deleteUser
     )
 
@@ -39,6 +41,7 @@ usersRouter
 .patch(
     validationMiddleware.updatedPasswordValidation,
     usersMiddlewares.validExistUser,
+    authMiddleware.protectAccountOwner,
     authController.updatedPassword
     )
 

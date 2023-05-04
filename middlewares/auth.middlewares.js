@@ -37,7 +37,32 @@ exports.protect = catchAsync (async (req, res, next) => {
         return next(new AppError('The ownwr of this token is not available', 401))
     }
 
+    if (user.passwordChangedAt) {
+        const changedTimeStamp = parseInt(
+            user.passwordChangedAt.getTime() / 1000, 
+            10
+            );
+
+            if (decoded.iat < changedTimeStamp) {
+                return next(
+                    new AppError(
+                        'User recently changed password, please login again', 
+                        401
+                    )
+                )
+            }
+    }
     const sessionUser = user;
     next();
 
+});
+
+exports.protectAccountOwner = catchAsync (async (req, res, next) => {
+    // validar el usuario dueño del la req.params y validar el usuario en sesion
+    const { user, sessionUser } = req;
+
+    if(user.userid !== sessionUser.userid){
+        return next(new AppError('You are not the owmner account', 401))
+    }
+    next();
 })

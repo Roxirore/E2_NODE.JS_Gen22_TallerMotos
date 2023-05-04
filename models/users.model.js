@@ -21,6 +21,10 @@ const User = dbusers.define('users', {
             type: DataTypes.STRING,
             allowNull: false,
     },
+    passwordChangedAt:{
+        type: DataTypes.DATA,
+        allowNull: false,
+    },
     role:{
             type: DataTypes.ENUM('client','employee'),
             allowNull: false,
