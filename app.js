@@ -28,7 +28,7 @@ app.all('*', (req, res, next) => {
   //  err.status = 'error';
   //  err.statusCode = 404;
 
-  return next(new AppError(`Can't find ${req.originalUrl} on this server`));
+  return next(new AppError(`Can't find ${req.originalUrl} on this server`), 404);
   //return res.status(404).json({
   //  status: 'error',
   // message: `Can't find ${req.originalUrl} on this server`
