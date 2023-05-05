@@ -9,17 +9,22 @@ dbusers.authenticate()
     console.log('database authenticated')
 })
 .catch(error => console.log(error))
+
+initModel();
+
 dbusers.sync()
 .then(() => {
     console.log('database synced')
 })
 .catch(error => console.log(error))
 
+
 dbrepairs.authenticate()
 .then(() => {
     console.log('database authenticated')
 })
 .catch(error => console.log(error))
+
 dbrepairs.sync()
 .then(() => {
     console.log('database synced')
